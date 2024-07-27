@@ -1,0 +1,7 @@
+apiVersion: v2
+name: common-chart
+description: Common helm chart for all kind of applications
+
+type: application
+# Helm chart Version
+version: 0.1.0
