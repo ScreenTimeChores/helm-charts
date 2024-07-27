@@ -1,0 +1,13 @@
+apiVersion: v1
+entries:
+  common-chart:
+  - apiVersion: v2
+    created: "2024-07-27T10:46:00.657289+04:00"
+    description: Common helm chart for all kind of applications
+    digest: 37583f6fb540eacccfd7761aef522105ad203d417a502cb8e9e27b16d4a4fe95
+    name: common-chart
+    type: application
+    urls:
+    - https://screentimechores.github.io/helm-charts/common-chart-0.1.0.tgz
+    version: 0.1.0
+generated: "2024-07-27T10:46:00.655893+04:00"
