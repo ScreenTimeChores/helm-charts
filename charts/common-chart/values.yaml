@@ -278,7 +278,6 @@ deployment:
   #  Security Context at Container Level
   containerSecurityContext:
     readOnlyRootFilesystem: true
-    runAsNonRoot: true
 
   openshiftOAuthProxy:
     enabled: false
