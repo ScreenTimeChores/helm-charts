@@ -40,38 +40,11 @@ spec:
 {{- if .Values.deployment.podLabels }}
 {{ toYaml .Values.deployment.podLabels | indent 8 }}
 {{- end }}
-{{- if or .Values.deployment.additionalPodAnnotations .Values.deployment.fluentdConfigAnnotations }}
+{{- if or .Values.deployment.additionalPodAnnotations }}
       annotations:
 {{- end }}
 {{- with .Values.deployment.additionalPodAnnotations }}
 {{ toYaml . | indent 8 }}
-{{- end }}
-{{- if .Values.deployment.fluentdConfigAnnotations }}
-        fluentdConfiguration: >
-          [
-            {
-              "containers":
-              [
-                {
-                  "expressionFirstLine": "{{ .Values.deployment.fluentdConfigAnnotations.regexFirstLine }}",
-                  "expression": "{{ .Values.deployment.fluentdConfigAnnotations.regex }}",
-                  "timeFormat": "{{ .Values.deployment.fluentdConfigAnnotations.timeFormat }}",
-                  "containerName": "{{ template "application.name" . }}"
-                }
-              ]{{- with .Values.deployment.fluentdConfigAnnotations.notifications }},
-              "notifications": {
-                {{- with .slack }}
-                "slack": {
-                  "webhookURL": "{{ .webhookURL }}",
-                  "channelName": "{{ .channelName }}"
-                },
-                {{- end }}
-                "key": "{{ .key }}",
-                "pattern": "{{ .pattern }}"
-              }
-              {{- end }}
-            }
-          ]
 {{- end }}
     spec:
       {{- if .Values.deployment.hostAliases }}
@@ -109,33 +82,6 @@ spec:
       - name: {{ .Values.deployment.imagePullSecrets }}
       {{- end }}
       containers:
-        {{- if .Values.deployment.openshiftOAuthProxy.enabled }}
-      - args:
-        {{- if .Values.deployment.openshiftOAuthProxy.disableTLSArg }}
-        - --http-address=:8081
-        {{- else }}
-        - --https-address=:8443
-        {{- end }}
-        - --provider=openshift
-        - --upstream=http://localhost:{{ .Values.deployment.openshiftOAuthProxy.port }}
-        - --openshift-service-account={{ template "application.name" . }}
-        - --tls-cert=/etc/tls/private/tls.crt
-        - --tls-key=/etc/tls/private/tls.key
-        - --cookie-secret=SECRET
-        image: {{ .Values.deployment.openshiftOAuthProxy.image | default "openshift/oauth-proxy:latest" }}
-        imagePullPolicy: IfNotPresent
-        name: oauth-proxy
-        ports:
-        {{- if .Values.deployment.openshiftOAuthProxy.disableTLSArg }}
-        - containerPort: 8081
-        {{- else }}
-        - containerPort: 8443
-        {{- end }}
-          name: proxy
-        volumeMounts:
-        - mountPath: /etc/tls/private
-          name: proxy-tls
-        {{- end }}
       - name: {{ template "application.name" . }}
 
         {{- $image := required "Undefined image for application container" .Values.deployment.image.repository }}
@@ -285,13 +231,8 @@ spec:
       dnsConfig:
 {{ toYaml .Values.deployment.dnsConfig | indent 8 }}
           {{- end }}
-      {{- if or (.Values.deployment.openshiftOAuthProxy.enabled) (.Values.deployment.volumes) (and (eq .Values.persistence.enabled true) (eq .Values.persistence.mountPVC true) )}}
+      {{- if or (.Values.deployment.volumes) (and (eq .Values.persistence.enabled true) (eq .Values.persistence.mountPVC true) )}}
       volumes:
-        {{- if .Values.deployment.openshiftOAuthProxy.enabled }}
-      - name: proxy-tls
-        secret:
-          secretName: {{ .Values.deployment.openshiftOAuthProxy.secretName }}
-        {{- end }}
         {{- if (eq .Values.persistence.mountPVC true) }}
       - name: {{ template "application.name" . }}-data
         persistentVolumeClaim:
