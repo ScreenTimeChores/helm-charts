@@ -39,5 +39,4 @@ spec:
 {{- end }}
   ports:
 {{ toYaml .Values.service.ports | indent 4 }}
-  {{- end }}
 {{- end }}
