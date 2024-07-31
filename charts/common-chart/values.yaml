@@ -139,13 +139,13 @@ deployment:
 
   # Environment variables to be passed to the app container
   env:
-  #  ENVIRONMENT:
-  #     value: "dev"
-  #  FREQUENCY:
-  #     valueFrom:
-  #        configMapKeyRef:
-  #           name: config
-  #           key: frequency
+  #  ENV_VAR: value
+  #
+  #  Secret reference
+  #  SECRET_VAR_NAME: secret:name/key
+  #
+  #  ConfigMap reference
+  #  CONFIGMAP_VAR_NAME: configmap:name/key
   
   # Volumes to be added to the pod
   volumes:
