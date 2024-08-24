@@ -17,7 +17,7 @@ metadata:
   annotations:
 {{ $job.annotations | indent 4 }}
 {{- end }}
-  name: {{ $name }}
+  name: {{ $name }}-{{ randAlphaNum 8 | lower }}
   namespace: {{ template "application.namespace" $ }}
 spec:
   {{- with $job.activeDeadlineSeconds }}
