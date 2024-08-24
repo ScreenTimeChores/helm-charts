@@ -58,8 +58,20 @@ spec:
         {{- with $job.env }}
         env:
         {{- range $key, $value := $job.env }}
-        - name: {{ include "application.tplvalues.render" ( dict "value" $key "context" $ ) }}
-{{ include "application.tplvalues.render" ( dict "value" $value "context" $ ) | indent 10 }}
+        - name: {{ $key }}
+        {{- if or (hasPrefix "secret:" $value)  (hasPrefix "configmap:" $value) }}
+        {{- $splitvalue := $value | splitList ":" | last }}
+          valueFrom:
+            {{- if hasPrefix "secret:" $value }}
+            secretKeyRef:
+            {{- else }}
+            configMapKeyRef:
+            {{- end }}
+              name: {{ (split "/" $splitvalue)._0 | quote }}
+              key: {{ (split "/" $splitvalue)._1 | quote }}
+        {{- else }}
+          value: {{ $value | quote }}
+        {{- end }}
         {{- end }}
         {{- end }}
         {{- with $job.envFrom }}
