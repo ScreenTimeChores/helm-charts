@@ -2,6 +2,15 @@ apiVersion: v1
 entries:
   common-chart:
   - apiVersion: v2
+    created: "2024-09-28T04:22:07.070279714Z"
+    description: Common helm chart for all kind of applications
+    digest: fb420c06810c07460d62256253dbf966d2bd42fe65dec4826bf173beb33e5586
+    name: common-chart
+    type: application
+    urls:
+    - https://github.com/ScreenTimeChores/helm-charts/releases/download/common-chart-0.1.8/common-chart-0.1.8.tgz
+    version: 0.1.8
+  - apiVersion: v2
     created: "2024-08-24T17:16:20.809135625Z"
     description: Common helm chart for all kind of applications
     digest: 34499ee069bcac3e9e584b5a3acc44fcd5450cc347ede5c7c1422948ecb598a7
@@ -73,4 +82,4 @@ entries:
     urls:
     - https://screentimechores.github.io/helm-charts/common-chart-0.1.0.tgz
     version: 0.1.0
-generated: "2024-08-24T17:16:20.809173706Z"
+generated: "2024-09-28T04:22:07.070310892Z"
