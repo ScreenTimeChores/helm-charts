@@ -25,9 +25,8 @@ cronJob:
     # db-migration:
     #   schedule: "* * * 8 *"
     #   priorityClassName: high-priority
-    #   env: 
-    #     KEY:
-    #       value: VALUE
+    #   env:
+    #     KEY: VALUE
     #   image:
     #     repository: docker.io/nginx
     #     tag: v1.0.0
@@ -39,7 +38,6 @@ cronJob:
     #     requests:
     #         memory: 5Gi
     #         cpu: 1
-  
 
 job:
   enabled: false
@@ -49,27 +47,24 @@ job:
     #     helm.sh/hook: "pre-install,pre-upgrade"
     #     helm.sh/hook-weight: "-1"
     #     helm.sh/hook-delete-policy: "before-hook-creation"
-    #   env: 
-    #     KEY:
-    #       value: VALUE
-    #   image: 
+    #   env:
+    #     KEY: VALUE
+    #   image:
     #     repository: docker.io/nginx
     #     tag: v1.0.0
     #     digest: '' # if set to a non empty value, digest takes precedence on the tag
     #     imagePullPolicy: IfNotPresent
     #   command: ["/bin/bash"]
     #   args: ["-c","sleep 5000"]
-    #   resources:  
+    #   resources:
     #     requests:
     #         memory: 5Gi
     #         cpu: 1
-  
 
 ##########################################################
 # Deployment
 ##########################################################
 deployment:
-
   enabled: true
   # By default deploymentStrategy is set to rollingUpdate with maxSurge of 25% and maxUnavailable of 25%
   # You can change type to `Recreate` or can uncomment `rollingUpdate` specification and adjust them to your usage.
@@ -78,7 +73,7 @@ deployment:
     # rollingUpdate:
     #   maxSurge: 25%
     #   maxUnavailable: 25%
-  
+
   # Reload deployment if configMap/secret updates
   reloadOnChange: true
 
@@ -146,7 +141,7 @@ deployment:
   #
   #  ConfigMap reference
   #  CONFIGMAP_VAR_NAME: configmap:name/key
-  
+
   # Volumes to be added to the pod
   volumes:
     # configmap-volume:
@@ -169,7 +164,7 @@ deployment:
     #    mountPath: path-2
 
   # priorityClassName defines the priority class for pod scheduling
-  priorityClassName: ''
+  priorityClassName: ""
 
   # Taint tolerations for nodes
   tolerations:
@@ -216,8 +211,8 @@ deployment:
   # Image of the app container
   image:
     repository: repository/image-name
-    tag: ''
-    digest: '' # if set to a non empty value, digest takes precedence on the tag
+    tag: ""
+    digest: "" # if set to a non empty value, digest takes precedence on the tag
     pullPolicy: IfNotPresent
   dnsConfig:
     # options:
@@ -309,7 +304,8 @@ deployment:
   terminationGracePeriodSeconds:
 
   # Default lifecycle configuration
-  lifecycle: {}
+  lifecycle:
+    {}
     # Example for a preStop hook:
     # preStop:
     #   exec:
@@ -338,7 +334,6 @@ persistence:
   storageSize: 8Gi
   volumeMode: ""
   volumeName: ""
-
 
 ##########################################################
 # Service object for servicing pods
@@ -377,19 +372,19 @@ ingress:
   enabled: false
 
   # Name of the ingress class
-  ingressClassName: ''
+  ingressClassName: ""
 
   # Port of the service that serves pods
   servicePort: http
 
   #Set pathType: default is ImplementationSpecific; Options: Exact, Prefix
-  pathType: ImplementationSpecific 
-  
+  pathType: ImplementationSpecific
+
   # List of host addresses to be exposed by this Ingress
   hosts:
     - host: chart-example.local
       paths:
-      - path: /
+        - path: /
       #  pathType: ''
       #  serviceName: ''
       #  servicePort: ''
@@ -424,7 +419,7 @@ rbac:
     additionalLabels:
       # key: value
 
-    # Annotations on service account 
+    # Annotations on service account
     annotations:
       # key: value
 
@@ -509,54 +504,54 @@ serviceMonitor:
 
   # List of the endpoints of service from which prometheus will scrape data
   endpoints:
-  - interval: 5s
-    path: /actuator/prometheus
-    port: http
+    - interval: 5s
+      path: /actuator/prometheus
+      port: http
 
 ##########################################################
 # HPA - Horizontal Pod Autoscaling
 ##########################################################
 autoscaling:
-# enabled is a boolean flag for enabling or disabling autoscaling
+  # enabled is a boolean flag for enabling or disabling autoscaling
   enabled: false
-# additionalLabels defines additional labels
+  # additionalLabels defines additional labels
   additionalLabels:
     # key: value
-# annotations defines annotations in key value pair
+  # annotations defines annotations in key value pair
   annotations:
     # key: value
-# minReplicas sets the minimum number of replicas
+  # minReplicas sets the minimum number of replicas
   minReplicas: 1
-# maxReplicas sets the maximum number of replicas
+  # maxReplicas sets the maximum number of replicas
   maxReplicas: 10
-# metrics is the list of metrics used for hpa
+  # metrics is the list of metrics used for hpa
   metrics:
-  - type: Resource
-    resource:
-      name: cpu
-      target:
-         type: Utilization
-         averageUtilization: 60
-  - type: Resource
-    resource:
-      name: memory
-      target:
-         type: Utilization
-         averageUtilization: 60
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 60
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: 60
 
 ##########################################################
 # VPA - Vertical Pod Autoscaling
 ##########################################################
 vpa:
-# enabled is a boolean flag for enabling or disabling vpa 
+  # enabled is a boolean flag for enabling or disabling vpa
   enabled: false
-# additionalLabels defines additional labels
+  # additionalLabels defines additional labels
   additionalLabels:
     # key: value
-# annotations defines annotations in key value pair
+  # annotations defines annotations in key value pair
   annotations:
     # key: value
-# container policies for individual containers.
+  # container policies for individual containers.
   containerPolicies: []
   updatePolicy:
     updateMode: Auto
@@ -585,7 +580,7 @@ externalSecret:
   # Default SecretStore for all externalsecrets defines which SecretStore to use when fetching the secret data
   secretStore:
     name: tenant-vault-secret-store
-    #kind: ClusterSecretStore # Defaults to SecretStore if not specified 
+    #kind: ClusterSecretStore # Defaults to SecretStore if not specified
 
   # RefreshInterval is the amount of time before the values reading again from the SecretStore provider
   refreshInterval: "1m"
@@ -594,18 +589,18 @@ externalSecret:
     # # Data defines the connection between the Kubernetes Secret keys and the Provider data
     #   data:
     #      mongo-password:
-    #        remoteRef: 
+    #        remoteRef:
     #           key: monodb
     #           property: passowrd
     #   secretStore:
     #      name: secret-store-name-2    # specify if value is other than default secretstore
     #   labels:
-    #      stakater.com/app: mongodb 
+    #      stakater.com/app: mongodb
     #   #
     # postgres:
-      ## Used to fetch all properties from the Provider key
-      #   dataFrom:
-      #     key: postgres
+    ## Used to fetch all properties from the Provider key
+    #   dataFrom:
+    #     key: postgres
 
 ##########################################################
 # Network Policy
